@@ -76,12 +76,14 @@ function getTimeDifference(targetDate) {
 }
 
 function updateDisplay(time) {
-    elements.years.textContent = pad(time.years);
-    elements.months.textContent = pad(time.months);
-    elements.days.textContent = pad(time.days);
-    elements.hours.textContent = pad(time.hours);
-    elements.minutes.textContent = pad(time.minutes);
-    elements.seconds.textContent = pad(time.seconds);
+    function updateDisplay(time) {
+    animateTimeNumber(elements.years, pad(time.years));
+    animateTimeNumber(elements.months, pad(time.months));
+    animateTimeNumber(elements.days, pad(time.days));
+    animateTimeNumber(elements.hours, pad(time.hours));
+    animateTimeNumber(elements.minutes, pad(time.minutes));
+    animateTimeNumber(elements.seconds, pad(time.seconds));
+}
 }
 
 function moveTo2032() {
