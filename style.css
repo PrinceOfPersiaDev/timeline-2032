@@ -1274,6 +1274,28 @@ body {
         font-size: 10px;
     }
 
+    /* =========================
+   TIME NUMBER CHANGE
+========================= */
+
+.number-change {
+    animation: numberChange 0.35s ease-out;
+}
+
+@keyframes numberChange {
+    0% {
+        opacity: 0.35;
+        transform: translateY(4px);
+        filter: blur(3px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
     .intro-subtitle {
         font-size: 7px;
     }
