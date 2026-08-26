@@ -174,3 +174,25 @@ if ("serviceWorker" in navigator) {
             });
     });
 }
+
+/* =========================
+   TIME NUMBER ANIMATION
+========================= */
+
+function animateTimeNumber(element, newValue) {
+    if (!element) return;
+
+    const value = String(newValue);
+
+    if (element.textContent === value) {
+        return;
+    }
+
+    element.classList.remove("number-change");
+
+    // Force browser to restart animation
+    void element.offsetWidth;
+
+    element.textContent = value;
+    element.classList.add("number-change");
+}
