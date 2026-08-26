@@ -1,4 +1,4 @@
-const CACHE_NAME = "time-v2";
+const CACHE_NAME = "time-v3";
 
 const FILES_TO_CACHE = [
     "./",
@@ -9,7 +9,9 @@ const FILES_TO_CACHE = [
     "./icon-512.png"
 ];
 
-/* نصب Service Worker */
+/* =========================
+   INSTALL
+========================= */
 
 self.addEventListener("install", (event) => {
     event.waitUntil(
@@ -21,7 +23,9 @@ self.addEventListener("install", (event) => {
     self.skipWaiting();
 });
 
-/* فعال‌سازی */
+/* =========================
+   ACTIVATE
+========================= */
 
 self.addEventListener("activate", (event) => {
     event.waitUntil(
@@ -31,43 +35,110 @@ self.addEventListener("activate", (event) => {
                     .filter((name) => name !== CACHE_NAME)
                     .map((name) => caches.delete(name))
             );
+        }).then(() => {
+            return self.clients.claim();
         })
     );
-
-    self.clients.claim();
 });
 
-/* درخواست‌ها */
+/* =========================
+   FETCH
+========================= */
 
 self.addEventListener("fetch", (event) => {
+
     if (event.request.method !== "GET") {
         return;
     }
 
-    event.respondWith(
-        caches.match(event.request).then((cachedResponse) => {
-            if (cachedResponse) {
-                return cachedResponse;
-            }
+    const url = new URL(event.request.url);
 
-            return fetch(event.request).then((networkResponse) => {
+    /*
+     * فایل‌های اصلی TIME:
+     * اول اینترنت، بعد Cache
+     */
 
-                if (
-                    !networkResponse ||
-                    networkResponse.status !== 200 ||
-                    networkResponse.type === "opaque"
-                ) {
+    const isTimeFile =
+        url.pathname.endsWith("/index.html") ||
+        url.pathname.endsWith("/style.css") ||
+        url.pathname.endsWith("/script.js") ||
+        url.pathname.endsWith("/manifest.json") ||
+        url.pathname.endsWith("/sw.js");
+
+    if (isTimeFile) {
+
+        event.respondWith(
+
+            fetch(event.request, {
+                cache: "no-store"
+            })
+                .then((networkResponse) => {
+
+                    if (
+                        networkResponse &&
+                        networkResponse.ok
+                    ) {
+
+                        const responseClone =
+                            networkResponse.clone();
+
+                        caches.open(CACHE_NAME)
+                            .then((cache) => {
+                                cache.put(
+                                    event.request,
+                                    responseClone
+                                );
+                            });
+                    }
+
                     return networkResponse;
+                })
+
+                .catch(() => {
+                    return caches.match(event.request);
+                })
+        );
+
+        return;
+    }
+
+    /*
+     * سایر فایل‌ها:
+     * اول Cache، بعد اینترنت
+     */
+
+    event.respondWith(
+
+        caches.match(event.request)
+            .then((cachedResponse) => {
+
+                if (cachedResponse) {
+                    return cachedResponse;
                 }
 
-                const responseClone = networkResponse.clone();
+                return fetch(event.request)
+                    .then((networkResponse) => {
 
-                caches.open(CACHE_NAME).then((cache) => {
-                    cache.put(event.request, responseClone);
-                });
+                        if (
+                            !networkResponse ||
+                            !networkResponse.ok
+                        ) {
+                            return networkResponse;
+                        }
 
-                return networkResponse;
-            });
-        })
+                        const responseClone =
+                            networkResponse.clone();
+
+                        caches.open(CACHE_NAME)
+                            .then((cache) => {
+                                cache.put(
+                                    event.request,
+                                    responseClone
+                                );
+                            });
+
+                        return networkResponse;
+                    });
+            })
     );
 });
