@@ -1,13 +1,15 @@
 {
+  "id": "./",
   "name": "TIME",
   "short_name": "TIME",
   "description": "زمان در حال گذر است.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#050505",
-  "theme_color": "#050505",
+  "background_color": "#070809",
+  "theme_color": "#070809",
   "orientation": "portrait",
+
   "icons": [
     {
       "src": "./icon-512.png",
