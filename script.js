@@ -29,23 +29,6 @@ function getTimeDifference(targetDate) {
     let months = targetDate.getMonth() - now.getMonth();
     let days = targetDate.getDate() - now.getDate();
 
-    if (days < 0) {
-        months--;
-
-        const previousMonth = new Date(
-            targetDate.getFullYear(),
-            targetDate.getMonth(),
-            0
-        );
-
-        days += previousMonth.getDate();
-    }
-
-    if (months < 0) {
-        years--;
-        months += 12;
-    }
-
     let hours = targetDate.getHours() - now.getHours();
     let minutes = targetDate.getMinutes() - now.getMinutes();
     let seconds = targetDate.getSeconds() - now.getSeconds();
@@ -101,24 +84,26 @@ function updateDisplay(time) {
     elements.seconds.textContent = pad(time.seconds);
 }
 
-function transitionToNextStage() {
-    if (currentStage === 1) {
-        currentStage = 2;
-
-        elements.countdown.classList.add("final-moment");
-
-        elements.message.style.opacity = "0";
-        elements.message.style.transform = "translateY(8px)";
-
-        setTimeout(() => {
-            elements.countdown.classList.remove("final-moment");
-
-            elements.message.textContent = "زمان ادامه دارد.";
-
-            elements.message.style.opacity = "1";
-            elements.message.style.transform = "translateY(0)";
-        }, 1800);
+function moveTo2032() {
+    if (currentStage !== 1) {
+        return;
     }
+
+    currentStage = 2;
+
+    elements.countdown.classList.add("final-moment");
+
+    elements.message.style.opacity = "0";
+    elements.message.style.transform = "translateY(8px)";
+
+    setTimeout(() => {
+        elements.message.textContent = "زمان ادامه دارد.";
+
+        elements.message.style.opacity = "1";
+        elements.message.style.transform = "translateY(0)";
+
+        elements.countdown.classList.remove("final-moment");
+    }, 1800);
 }
 
 function updateCountdown() {
@@ -130,7 +115,7 @@ function updateCountdown() {
     const time = getTimeDifference(target);
 
     if (!time) {
-        transitionToNextStage();
+        moveTo2032();
         return;
     }
 
@@ -141,6 +126,9 @@ updateCountdown();
 
 setInterval(updateCountdown, 1000);
 
+
+/* ثبت Service Worker */
+
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
         navigator.serviceWorker
@@ -149,7 +137,10 @@ if ("serviceWorker" in navigator) {
                 console.log("TIME Service Worker registered.");
             })
             .catch((error) => {
-                console.error("Service Worker registration failed:", error);
+                console.error(
+                    "Service Worker registration failed:",
+                    error
+                );
             });
     });
 }
