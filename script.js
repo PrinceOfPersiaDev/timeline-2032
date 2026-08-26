@@ -14,9 +14,18 @@ const elements = {
     message: document.getElementById("mysteryMessage"),
     localClock: document.getElementById("localClock")
 };
+
+/* =========================
+   HELPERS
+========================= */
+
 function pad(number) {
     return String(number).padStart(2, "0");
 }
+
+/* =========================
+   TIME DIFFERENCE
+========================= */
 
 function getTimeDifference(targetDate) {
     const now = new Date();
@@ -25,13 +34,29 @@ function getTimeDifference(targetDate) {
         return null;
     }
 
-    let years = targetDate.getFullYear() - now.getFullYear();
-    let months = targetDate.getMonth() - now.getMonth();
-    let days = targetDate.getDate() - now.getDate();
+    let years =
+        targetDate.getFullYear() -
+        now.getFullYear();
 
-    let hours = targetDate.getHours() - now.getHours();
-    let minutes = targetDate.getMinutes() - now.getMinutes();
-    let seconds = targetDate.getSeconds() - now.getSeconds();
+    let months =
+        targetDate.getMonth() -
+        now.getMonth();
+
+    let days =
+        targetDate.getDate() -
+        now.getDate();
+
+    let hours =
+        targetDate.getHours() -
+        now.getHours();
+
+    let minutes =
+        targetDate.getMinutes() -
+        now.getMinutes();
+
+    let seconds =
+        targetDate.getSeconds() -
+        now.getSeconds();
 
     if (seconds < 0) {
         seconds += 60;
@@ -75,114 +100,14 @@ function getTimeDifference(targetDate) {
     };
 }
 
-function updateDisplay(time) {
-    function updateDisplay(time) {
-    animateTimeNumber(elements.years, pad(time.years));
-    animateTimeNumber(elements.months, pad(time.months));
-    animateTimeNumber(elements.days, pad(time.days));
-    animateTimeNumber(elements.hours, pad(time.hours));
-    animateTimeNumber(elements.minutes, pad(time.minutes));
-    animateTimeNumber(elements.seconds, pad(time.seconds));
-}
-}
-
-function moveTo2032() {
-    if (currentStage !== 1) {
-        return;
-    }
-
-    currentStage = 2;
-
-    elements.countdown.classList.add("final-moment");
-
-    elements.message.style.opacity = "0";
-    elements.message.style.transform = "translateY(8px)";
-
-    setTimeout(() => {
-        elements.message.textContent = "زمان ادامه دارد.";
-
-        elements.message.style.opacity = "1";
-        elements.message.style.transform = "translateY(0)";
-
-        elements.countdown.classList.remove("final-moment");
-    }, 1800);
-}
-
-function updateCountdown() {
-    const target =
-        currentStage === 1
-            ? FIRST_TARGET
-            : SECOND_TARGET;
-
-    const time = getTimeDifference(target);
-
-    if (!time) {
-        moveTo2032();
-        return;
-    }
-
-    updateDisplay(time);
-}
-
-function updateLocalClock() {
-    if (!elements.localClock) {
-        return;
-    }
-
-    const now = new Date();
-
-    const hours = String(now.getHours()).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-    const seconds = String(now.getSeconds()).padStart(2, "0");
-
-    elements.localClock.textContent =
-        `${hours}:${minutes}:${seconds}`;
-}
-
-updateLocalClock();
-
-setInterval(updateLocalClock, 1000);
-
-updateCountdown();
-
-setInterval(updateCountdown, 1000);
-
 /* =========================
-   TIME CINEMATIC INTRO
-========================= */
-
-const timeIntro = document.getElementById("timeIntro");
-
-if (timeIntro) {
-    timeIntro.addEventListener("animationend", () => {
-        timeIntro.remove();
-    });
-}
-
-/* ثبت Service Worker */
-
-if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-        navigator.serviceWorker
-            .register("./sw.js")
-            .then(() => {
-                console.log("TIME Service Worker registered.");
-            })
-            .catch((error) => {
-                console.error(
-                    "Service Worker registration failed:",
-                    error
-                );
-            });
-    });
-}
-
-/* =========================
-   TIME NUMBER ANIMATION
+   NUMBER ANIMATION
 ========================= */
 
 function animateTimeNumber(element, newValue) {
-    if (!element) return;
+    if (!element) {
+        return;
+    }
 
     const value = String(newValue);
 
@@ -192,9 +117,202 @@ function animateTimeNumber(element, newValue) {
 
     element.classList.remove("number-change");
 
-    // Force browser to restart animation
     void element.offsetWidth;
 
     element.textContent = value;
+
     element.classList.add("number-change");
+}
+
+/* =========================
+   DISPLAY
+========================= */
+
+function updateDisplay(time) {
+    animateTimeNumber(
+        elements.years,
+        pad(time.years)
+    );
+
+    animateTimeNumber(
+        elements.months,
+        pad(time.months)
+    );
+
+    animateTimeNumber(
+        elements.days,
+        pad(time.days)
+    );
+
+    animateTimeNumber(
+        elements.hours,
+        pad(time.hours)
+    );
+
+    animateTimeNumber(
+        elements.minutes,
+        pad(time.minutes)
+    );
+
+    animateTimeNumber(
+        elements.seconds,
+        pad(time.seconds)
+    );
+}
+
+/* =========================
+   MOVE TO 2032
+========================= */
+
+function moveTo2032() {
+    if (currentStage !== 1) {
+        return;
+    }
+
+    currentStage = 2;
+
+    if (elements.countdown) {
+        elements.countdown.classList.add(
+            "final-moment"
+        );
+    }
+
+    if (elements.message) {
+        elements.message.style.opacity = "0";
+        elements.message.style.transform =
+            "translateY(8px)";
+    }
+
+    setTimeout(() => {
+        if (elements.message) {
+            elements.message.textContent =
+                "زمان ادامه دارد.";
+
+            elements.message.style.opacity = "1";
+
+            elements.message.style.transform =
+                "translateY(0)";
+        }
+
+        if (elements.countdown) {
+            elements.countdown.classList.remove(
+                "final-moment"
+            );
+        }
+
+        updateCountdown();
+
+    }, 1800);
+}
+
+/* =========================
+   COUNTDOWN
+========================= */
+
+function updateCountdown() {
+    const target =
+        currentStage === 1
+            ? FIRST_TARGET
+            : SECOND_TARGET;
+
+    const time =
+        getTimeDifference(target);
+
+    if (!time) {
+        moveTo2032();
+        return;
+    }
+
+    updateDisplay(time);
+}
+
+/* =========================
+   LOCAL CLOCK
+========================= */
+
+function updateLocalClock() {
+    if (!elements.localClock) {
+        return;
+    }
+
+    const now = new Date();
+
+    const hours = String(
+        now.getHours()
+    ).padStart(2, "0");
+
+    const minutes = String(
+        now.getMinutes()
+    ).padStart(2, "0");
+
+    const seconds = String(
+        now.getSeconds()
+    ).padStart(2, "0");
+
+    elements.localClock.textContent =
+        `${hours}:${minutes}:${seconds}`;
+}
+
+/* =========================
+   START
+========================= */
+
+updateLocalClock();
+updateCountdown();
+
+setInterval(
+    updateLocalClock,
+    1000
+);
+
+setInterval(
+    updateCountdown,
+    1000
+);
+
+/* =========================
+   CINEMATIC INTRO
+========================= */
+
+const timeIntro =
+    document.getElementById("timeIntro");
+
+if (timeIntro) {
+    timeIntro.addEventListener(
+        "animationend",
+        () => {
+            timeIntro.remove();
+        },
+        { once: true }
+    );
+}
+
+/* =========================
+   SERVICE WORKER
+========================= */
+
+if ("serviceWorker" in navigator) {
+
+    window.addEventListener(
+        "load",
+        () => {
+
+            navigator.serviceWorker
+                .register("./sw.js")
+
+                .then(() => {
+                    console.log(
+                        "TIME Service Worker registered."
+                    );
+                })
+
+                .catch((error) => {
+                    console.error(
+                        "Service Worker registration failed:",
+                        error
+                    );
+                });
+
+        }
+    );
 }
