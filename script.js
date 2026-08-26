@@ -145,6 +145,17 @@ updateCountdown();
 
 setInterval(updateCountdown, 1000);
 
+/* =========================
+   TIME CINEMATIC INTRO
+========================= */
+
+const timeIntro = document.getElementById("timeIntro");
+
+if (timeIntro) {
+    timeIntro.addEventListener("animationend", () => {
+        timeIntro.remove();
+    });
+}
 
 /* ثبت Service Worker */
 
