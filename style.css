@@ -1025,3 +1025,256 @@ body {
     user-select: none;
     -webkit-user-select: none;
 }
+
+/* =========================
+   TIME CINEMATIC INTRO
+========================= */
+
+.time-intro {
+    position: fixed;
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(255, 255, 255, 0.045),
+            transparent 38%
+        ),
+        #030405;
+
+    opacity: 1;
+
+    animation:
+        introExit 1s ease forwards;
+
+    animation-delay: 2.2s;
+
+    pointer-events: none;
+}
+
+.intro-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+
+    animation:
+        introReveal 1.8s
+        cubic-bezier(0.22, 1, 0.36, 1)
+        forwards;
+}
+
+.intro-logo {
+    color: #f4f5f6;
+
+    font-family:
+        "Inter",
+        sans-serif;
+
+    font-size:
+        clamp(38px, 8vw, 86px);
+
+    font-weight: 300;
+
+    letter-spacing: 0.72em;
+
+    padding-left: 0.72em;
+
+    text-shadow:
+        0 0 45px
+        rgba(255, 255, 255, 0.12);
+}
+
+.intro-line {
+    width: 0;
+
+    height: 1px;
+
+    margin-top: 28px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.45),
+            transparent
+        );
+
+    animation:
+        introLine 1.3s
+        ease
+        forwards;
+
+    animation-delay: 0.55s;
+}
+
+.intro-text {
+    margin-top: 25px;
+
+    color:
+        rgba(255, 255, 255, 0.5);
+
+    font-family:
+        "Vazirmatn",
+        sans-serif;
+
+    font-size:
+        clamp(11px, 1.5vw, 15px);
+
+    font-weight: 300;
+
+    opacity: 0;
+
+    transform:
+        translateY(8px);
+
+    animation:
+        introTextIn 1s
+        ease
+        forwards;
+
+    animation-delay: 0.75s;
+}
+
+.intro-subtitle {
+    margin-top: 14px;
+
+    color:
+        rgba(255, 255, 255, 0.2);
+
+    font-family:
+        "Inter",
+        sans-serif;
+
+    font-size:
+        8px;
+
+    letter-spacing: 0.28em;
+
+    opacity: 0;
+
+    animation:
+        introTextIn 1s
+        ease
+        forwards;
+
+    animation-delay: 1s;
+}
+
+/* =========================
+   INTRO ANIMATIONS
+========================= */
+
+@keyframes introReveal {
+
+    0% {
+        opacity: 0;
+
+        transform:
+            scale(0.96)
+            translateY(8px);
+
+        filter: blur(8px);
+    }
+
+    45% {
+        opacity: 1;
+
+        transform:
+            scale(1)
+            translateY(0);
+
+        filter: blur(0);
+    }
+
+    100% {
+        opacity: 1;
+
+        transform:
+            scale(1)
+            translateY(0);
+
+        filter: blur(0);
+    }
+}
+
+@keyframes introLine {
+
+    from {
+        width: 0;
+        opacity: 0;
+    }
+
+    to {
+        width: 90px;
+        opacity: 1;
+    }
+}
+
+@keyframes introTextIn {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+@keyframes introExit {
+
+    0% {
+        opacity: 1;
+
+        visibility: visible;
+    }
+
+    100% {
+        opacity: 0;
+
+        visibility: hidden;
+    }
+}
+
+/* =========================
+   MOBILE INTRO
+========================= */
+
+@media (max-width: 600px) {
+
+    .intro-logo {
+        font-size: 42px;
+
+        letter-spacing: 0.58em;
+
+        padding-left: 0.58em;
+    }
+
+    .intro-line {
+        margin-top: 22px;
+    }
+
+    .intro-text {
+        margin-top: 21px;
+
+        font-size: 10px;
+    }
+
+    .intro-subtitle {
+        font-size: 7px;
+    }
+}
