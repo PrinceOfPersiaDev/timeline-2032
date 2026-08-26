@@ -23,7 +23,7 @@ body {
 body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'Vazirmatn', sans-serif;
+    font-family: "Vazirmatn", sans-serif;
     overflow: hidden;
 }
 
@@ -36,49 +36,88 @@ body {
     justify-content: center;
     overflow: hidden;
     isolation: isolate;
+    background:
+        radial-gradient(
+            circle at 50% 45%,
+            rgba(255, 255, 255, 0.025),
+            transparent 38%
+        ),
+        #050505;
 }
 
-/* نور بسیار ظریف پس‌زمینه */
+/* نور مرکزی */
+
 .background-glow {
     position: absolute;
     width: 55vw;
     height: 55vw;
-    max-width: 700px;
-    max-height: 700px;
+    max-width: 720px;
+    max-height: 720px;
     border-radius: 50%;
-    background: radial-gradient(
-        circle,
-        var(--glow) 0%,
-        rgba(255, 255, 255, 0.025) 30%,
-        transparent 70%
-    );
-    filter: blur(30px);
-    animation: breathing 7s ease-in-out infinite;
+    background:
+        radial-gradient(
+            circle,
+            rgba(255, 255, 255, 0.075) 0%,
+            rgba(255, 255, 255, 0.025) 30%,
+            transparent 70%
+        );
+    filter: blur(35px);
+    animation: breathing 8s ease-in-out infinite;
     pointer-events: none;
-    z-index: -1;
+    z-index: -2;
 }
 
 @keyframes breathing {
     0%,
     100% {
         transform: scale(0.9);
-        opacity: 0.55;
+        opacity: 0.45;
     }
 
     50% {
-        transform: scale(1.1);
-        opacity: 1;
+        transform: scale(1.08);
+        opacity: 0.85;
     }
 }
 
+/* خطوط بسیار ظریف */
+
+.ambient-line {
+    position: absolute;
+    width: 1px;
+    height: 35vh;
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        rgba(255, 255, 255, 0.08),
+        transparent
+    );
+    opacity: 0.4;
+}
+
+.ambient-line-one {
+    right: 8%;
+    top: 15%;
+    transform: rotate(18deg);
+}
+
+.ambient-line-two {
+    left: 8%;
+    bottom: 15%;
+    transform: rotate(18deg);
+}
+
+/* محتوای اصلی */
+
 .countdown-container {
-    width: min(1100px, 92%);
+    width: min(1100px, 94%);
     text-align: center;
     position: relative;
     z-index: 2;
 }
 
-/* عنوان */
+/* لوگوتایپی */
+
 .brand {
     margin-bottom: 14px;
 }
@@ -89,25 +128,27 @@ body {
     font-weight: 400;
     letter-spacing: 0.55em;
     padding-left: 0.55em;
-    color: rgba(255, 255, 255, 0.88);
+    color: rgba(255, 255, 255, 0.9);
 }
 
-/* جمله بالای تایمر */
+/* متن مرموز */
+
 .mystery-line {
-    color: var(--muted);
+    color: #777;
     font-size: clamp(11px, 1.4vw, 14px);
     font-weight: 300;
-    letter-spacing: 0.02em;
     margin-bottom: clamp(35px, 6vh, 65px);
 }
 
-/* تایمر */
+/* شمارشگر */
+
 .countdown {
     display: flex;
     align-items: center;
     justify-content: center;
     direction: ltr;
     gap: clamp(7px, 1.5vw, 20px);
+    transition: opacity 0.5s ease;
 }
 
 .time-unit {
@@ -124,8 +165,9 @@ body {
     line-height: 1;
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.04em;
-    color: #ffffff;
-    text-shadow: 0 0 30px rgba(255, 255, 255, 0.08);
+    color: #fff;
+    text-shadow:
+        0 0 25px rgba(255, 255, 255, 0.06);
 }
 
 .time-unit small {
@@ -143,16 +185,20 @@ body {
     margin-bottom: 20px;
 }
 
-/* پیام پایین */
+/* پیام */
+
 .mystery-message {
     margin-top: clamp(45px, 8vh, 80px);
     color: rgba(255, 255, 255, 0.35);
     font-size: clamp(10px, 1.2vw, 13px);
     font-weight: 300;
-    transition: opacity 0.6s ease, transform 0.6s ease;
+    transition:
+        opacity 0.6s ease,
+        transform 0.6s ease;
 }
 
 /* فوتر */
+
 .footer {
     position: absolute;
     bottom: 25px;
@@ -168,7 +214,7 @@ body {
     letter-spacing: 0.25em;
 }
 
-.footer span:first-child {
+.status-dot {
     font-size: 6px;
     animation: pulse 2s infinite;
 }
@@ -184,7 +230,8 @@ body {
     }
 }
 
-/* حالت نزدیک شدن به پایان */
+/* حالت ویژه انتقال */
+
 .countdown.final-moment {
     animation: finalPulse 1s ease-in-out infinite;
 }
@@ -196,15 +243,16 @@ body {
     }
 
     50% {
-        opacity: 0.65;
+        opacity: 0.55;
     }
 }
 
 /* موبایل */
+
 @media (max-width: 700px) {
 
     .countdown-container {
-        width: 94%;
+        width: 95%;
     }
 
     .brand span {
@@ -240,9 +288,14 @@ body {
     .mystery-message {
         margin-top: 50px;
     }
+
+    .ambient-line {
+        opacity: 0.2;
+    }
 }
 
 /* گوشی‌های خیلی کوچک */
+
 @media (max-width: 390px) {
 
     .time-unit {
@@ -263,6 +316,7 @@ body {
 }
 
 /* جلوگیری از انتخاب متن */
+
 .brand,
 .mystery-line,
 .countdown,
