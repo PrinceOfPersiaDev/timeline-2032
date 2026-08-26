@@ -1,0 +1,272 @@
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600&display=swap');
+
+:root {
+    --bg: #050505;
+    --text: #f5f5f5;
+    --muted: #777;
+    --line: rgba(255, 255, 255, 0.08);
+    --glow: rgba(255, 255, 255, 0.07);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Vazirmatn', sans-serif;
+    overflow: hidden;
+}
+
+.time-page {
+    position: relative;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+/* نور بسیار ظریف پس‌زمینه */
+.background-glow {
+    position: absolute;
+    width: 55vw;
+    height: 55vw;
+    max-width: 700px;
+    max-height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        var(--glow) 0%,
+        rgba(255, 255, 255, 0.025) 30%,
+        transparent 70%
+    );
+    filter: blur(30px);
+    animation: breathing 7s ease-in-out infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@keyframes breathing {
+    0%,
+    100% {
+        transform: scale(0.9);
+        opacity: 0.55;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+}
+
+.countdown-container {
+    width: min(1100px, 92%);
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+/* عنوان */
+.brand {
+    margin-bottom: 14px;
+}
+
+.brand span {
+    font-family: Arial, sans-serif;
+    font-size: clamp(18px, 2vw, 25px);
+    font-weight: 400;
+    letter-spacing: 0.55em;
+    padding-left: 0.55em;
+    color: rgba(255, 255, 255, 0.88);
+}
+
+/* جمله بالای تایمر */
+.mystery-line {
+    color: var(--muted);
+    font-size: clamp(11px, 1.4vw, 14px);
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    margin-bottom: clamp(35px, 6vh, 65px);
+}
+
+/* تایمر */
+.countdown {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    direction: ltr;
+    gap: clamp(7px, 1.5vw, 20px);
+}
+
+.time-unit {
+    min-width: clamp(58px, 9vw, 120px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.time-unit span {
+    font-family: Arial, sans-serif;
+    font-size: clamp(28px, 5.5vw, 68px);
+    font-weight: 300;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.04em;
+    color: #ffffff;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.08);
+}
+
+.time-unit small {
+    margin-top: 14px;
+    color: #666;
+    font-size: clamp(9px, 1.1vw, 12px);
+    font-weight: 300;
+}
+
+.separator {
+    color: rgba(255, 255, 255, 0.22);
+    font-family: Arial, sans-serif;
+    font-size: clamp(20px, 3vw, 40px);
+    font-weight: 200;
+    margin-bottom: 20px;
+}
+
+/* پیام پایین */
+.mystery-message {
+    margin-top: clamp(45px, 8vh, 80px);
+    color: rgba(255, 255, 255, 0.35);
+    font-size: clamp(10px, 1.2vw, 13px);
+    font-weight: 300;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* فوتر */
+.footer {
+    position: absolute;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    direction: ltr;
+    color: rgba(255, 255, 255, 0.18);
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+}
+
+.footer span:first-child {
+    font-size: 6px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 0.2;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+}
+
+/* حالت نزدیک شدن به پایان */
+.countdown.final-moment {
+    animation: finalPulse 1s ease-in-out infinite;
+}
+
+@keyframes finalPulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.65;
+    }
+}
+
+/* موبایل */
+@media (max-width: 700px) {
+
+    .countdown-container {
+        width: 94%;
+    }
+
+    .brand span {
+        font-size: 17px;
+    }
+
+    .mystery-line {
+        margin-bottom: 45px;
+    }
+
+    .countdown {
+        gap: 3px;
+    }
+
+    .time-unit {
+        min-width: 45px;
+    }
+
+    .time-unit span {
+        font-size: clamp(21px, 7.5vw, 38px);
+    }
+
+    .time-unit small {
+        margin-top: 10px;
+        font-size: 8px;
+    }
+
+    .separator {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .mystery-message {
+        margin-top: 50px;
+    }
+}
+
+/* گوشی‌های خیلی کوچک */
+@media (max-width: 390px) {
+
+    .time-unit {
+        min-width: 39px;
+    }
+
+    .time-unit span {
+        font-size: 20px;
+    }
+
+    .separator {
+        font-size: 17px;
+    }
+
+    .time-unit small {
+        font-size: 7px;
+    }
+}
+
+/* جلوگیری از انتخاب متن */
+.brand,
+.mystery-line,
+.countdown,
+.mystery-message,
+.footer {
+    user-select: none;
+}
