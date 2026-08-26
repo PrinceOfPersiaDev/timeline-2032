@@ -9,6 +9,12 @@
     >
 
     <meta name="theme-color" content="#050505">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta
+        name="apple-mobile-web-app-status-bar-style"
+        content="black-translucent"
+    >
 
     <meta
         name="description"
@@ -16,9 +22,11 @@
     >
 
     <title>TIME</title>
-    
-<link rel="icon" type="image/png" href="icon-512.png">
-<link rel="manifest" href="manifest.json">
+
+    <link rel="icon" type="image/png" href="icon-512.png">
+    <link rel="apple-touch-icon" href="icon-512.png">
+    <link rel="manifest" href="manifest.json">
+
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -28,9 +36,12 @@
 
         <div class="background-glow"></div>
 
+        <div class="ambient-line ambient-line-one"></div>
+        <div class="ambient-line ambient-line-two"></div>
+
         <section class="countdown-container">
 
-            <div class="brand">
+            <div class="brand" aria-label="TIME">
                 <span>TIME</span>
             </div>
 
@@ -38,7 +49,11 @@
                 زمان در حال گذر است.
             </div>
 
-            <div class="countdown" id="countdown">
+            <div
+                class="countdown"
+                id="countdown"
+                aria-label="شمارش معکوس"
+            >
 
                 <div class="time-unit">
                     <span id="years">--</span>
@@ -82,14 +97,17 @@
 
             </div>
 
-            <div class="mystery-message" id="mysteryMessage">
+            <div
+                class="mystery-message"
+                id="mysteryMessage"
+            >
                 هر ثانیه مهم است.
             </div>
 
         </section>
 
         <footer class="footer">
-            <span>●</span>
+            <span class="status-dot">●</span>
             <span>TIME</span>
         </footer>
 
