@@ -11,9 +11,9 @@ const elements = {
     minutes: document.getElementById("minutes"),
     seconds: document.getElementById("seconds"),
     countdown: document.getElementById("countdown"),
-    message: document.getElementById("mysteryMessage")
+    message: document.getElementById("mysteryMessage"),
+    localClock: document.getElementById("localClock")
 };
-
 function pad(number) {
     return String(number).padStart(2, "0");
 }
@@ -121,6 +121,25 @@ function updateCountdown() {
 
     updateDisplay(time);
 }
+
+function updateLocalClock() {
+    if (!elements.localClock) {
+        return;
+    }
+
+    const now = new Date();
+
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    const seconds = String(now.getSeconds()).padStart(2, "0");
+
+    elements.localClock.textContent =
+        `${hours}:${minutes}:${seconds}`;
+}
+
+updateLocalClock();
+
+setInterval(updateLocalClock, 1000);
 
 updateCountdown();
 
