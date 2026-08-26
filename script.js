@@ -20,28 +20,10 @@ function pad(number) {
 
 function getTimeDifference(targetDate) {
     const now = new Date();
-    let difference = targetDate.getTime() - now.getTime();
 
-    if (difference <= 0) {
+    if (targetDate.getTime() <= now.getTime()) {
         return null;
     }
-
-    const totalSeconds = Math.floor(difference / 1000);
-
-    const seconds = totalSeconds % 60;
-    const totalMinutes = Math.floor(totalSeconds / 60);
-
-    const minutes = totalMinutes % 60;
-    const totalHours = Math.floor(totalMinutes / 60);
-
-    const hours = totalHours % 24;
-    const totalDays = Math.floor(totalHours / 24);
-
-    /*
-     * برای سال و ماه، از تاریخ واقعی استفاده می‌کنیم
-     * تا تعداد روزهای ماه و سال کبیسه درست محاسبه شود.
-     */
-    const now = new Date();
 
     let years = targetDate.getFullYear() - now.getFullYear();
     let months = targetDate.getMonth() - now.getMonth();
@@ -64,38 +46,40 @@ function getTimeDifference(targetDate) {
         months += 12;
     }
 
-    /*
-     * اگر زمان امروز از زمان هدف در همان روز جلوتر باشد،
-     * محاسبه سال/ماه/روز را یک مرحله اصلاح می‌کنیم.
-     */
-    const candidate = new Date(
-        now.getFullYear() + years,
-        now.getMonth() + months,
-        now.getDate() + days,
-        now.getHours(),
-        now.getMinutes(),
-        now.getSeconds()
-    );
+    let hours = targetDate.getHours() - now.getHours();
+    let minutes = targetDate.getMinutes() - now.getMinutes();
+    let seconds = targetDate.getSeconds() - now.getSeconds();
 
-    if (candidate > targetDate) {
+    if (seconds < 0) {
+        seconds += 60;
+        minutes--;
+    }
+
+    if (minutes < 0) {
+        minutes += 60;
+        hours--;
+    }
+
+    if (hours < 0) {
+        hours += 24;
         days--;
+    }
 
-        if (days < 0) {
-            months--;
+    if (days < 0) {
+        months--;
 
-            const previousMonth = new Date(
-                targetDate.getFullYear(),
-                targetDate.getMonth(),
-                0
-            );
+        const previousMonth = new Date(
+            targetDate.getFullYear(),
+            targetDate.getMonth(),
+            0
+        );
 
-            days = previousMonth.getDate() + days;
-        }
+        days += previousMonth.getDate();
+    }
 
-        if (months < 0) {
-            years--;
-            months += 12;
-        }
+    if (months < 0) {
+        months += 12;
+        years--;
     }
 
     return {
